@@ -27,7 +27,6 @@ class TeacherFactory extends Factory
             'name'     => $this->faker->name(),
             'email'    => $this->faker->unique()->safeEmail(),
             'username' => $username,
-            // bcrypt 一个固定密码，测试时可以统一用 'password'
             'password' => bcrypt('password'),
         ];
     }

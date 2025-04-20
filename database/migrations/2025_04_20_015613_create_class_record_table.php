@@ -10,11 +10,11 @@ return new class extends Migration {
         Schema::create('class_record', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')
-                  ->constrained('students')
-                  ->cascadeOnDelete();
+                ->constrained('students')
+                ->cascadeOnDelete();
             $table->foreignId('course_id')
-                  ->constrained('courses')
-                  ->cascadeOnDelete();
+                ->constrained('courses')
+                ->cascadeOnDelete();
             $table->timestamp('selected_at');
             $table->timestamps();
         });

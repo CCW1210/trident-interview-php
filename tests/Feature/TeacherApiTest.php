@@ -19,10 +19,10 @@ class TeacherApiTest extends BaseTestCase
         $response = $this->getJson('/api/teachers');
 
         $response->assertStatus(200)
-                 ->assertJsonCount(5)
-                 ->assertJsonStructure([
-                     '*' => ['id','name','email','username'],
-                 ]);
+            ->assertJsonCount(5)
+            ->assertJsonStructure([
+                '*' => ['id', 'name', 'email', 'username'],
+            ]);
     }
 
     public function test_can_create_a_teacher()
@@ -37,8 +37,8 @@ class TeacherApiTest extends BaseTestCase
         $response = $this->postJson('/api/teachers', $payload);
 
         $response->assertStatus(201)
-                 ->assertJsonFragment(['name' => '測試講師'])
-                 ->assertJsonFragment(['email' => 'test@test.com']);
+            ->assertJsonFragment(['name' => '測試講師'])
+            ->assertJsonFragment(['email' => 'test@test.com']);
 
         $this->assertDatabaseHas('teachers', [
             'email' => 'test@test.com',
@@ -55,9 +55,9 @@ class TeacherApiTest extends BaseTestCase
         $response = $this->getJson("/api/teachers/{$teacher->id}/courses");
 
         $response->assertStatus(200)
-                 ->assertJsonStructure([
-                     '*' => ['id','name','start_time','end_time'],
-                 ]);
+            ->assertJsonStructure([
+                '*' => ['id', 'name', 'start_time', 'end_time'],
+            ]);
     }
 
     public function test_returns_404_for_nonexistent_teacher_courses()
