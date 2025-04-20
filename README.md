@@ -1,61 +1,130 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PHP 面試專用 CRUD API 專案
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+此專案為 Laravel 開發的簡易選課系統後端，適用於面試題目中的 CRUD API 實作練習，包含教師（teacher）、課程（course）、學生（student）相關的登入、查詢、建立、更新及刪除功能。
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 環境需求
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- PHP >= 8.0
+- Composer
+- MySQL
+- Laravel 10.x
+- XAMPP（含 Apache + MySQL）
+- VSCode
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 安裝與設定
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. 在本地安裝並啟動 XAMPP（Apache + MySQL）。
+2. Clone 此專案：
+   ```bash
+   git clone <your-repo-url> php-interview-api
+   cd php-interview-api
+   ```
+3. 安裝相依套件：
+   ```bash
+   composer install
+   ```
+4. 複製 `.env.example` 為 `.env`，並設定資料庫連線：
+   ```ini
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=your_database
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+5. 產生應用程式金鑰：
+   ```bash
+   php artisan key:generate
+   ```
+6. 執行資料表 migration 與 seed：
+   ```bash
+   php artisan migrate
+   php artisan db:seed --class=MockDataSeeder
+   ```
+7. 啟動本地開發伺服器：
+   ```bash
+   php artisan serve
+   ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 主要功能與 API
 
-## Laravel Sponsors
+### 教師 (Teacher)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+| 方法   | 路徑                             | 說明                   |
+| ------ | -------------------------------- | ---------------------- |
+| GET    | `/api/teachers`                  | 列出所有教師           |
+| POST   | `/api/teachers`                  | 建立新教師             |
+| GET    | `/api/teachers/{id}/courses`     | 查詢指定教師的課程列表 |
+| POST   | `/api/teacher/login`             | 教師登入               |
 
-### Premium Partners
+### 課程 (Course)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+| 方法   | 路徑                         | 說明             |
+| ------ | ---------------------------- | ---------------- |
+| GET    | `/api/courses`               | 列出所有課程     |
+| POST   | `/api/courses`               | 新增課程         |
+| PUT    | `/api/courses/{id}`          | 更新課程         |
+| DELETE | `/api/courses/{id}`          | 刪除課程         |
 
-## Contributing
+### 學生 (Student)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+| 方法   | 路徑                                    | 說明                       |
+| ------ | --------------------------------------- | -------------------------- |
+| POST   | `/api/student/login`                    | 學生登入                   |
+| POST   | `/api/students/{id}/courses`            | 學生選課                   |
+| PUT    | `/api/students/{id}/courses/{courseId}` | 修改選課狀態 (例如退選)    |
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 測試 (Feature Tests)
 
-## Security Vulnerabilities
+- 使用 PHPUnit 撰寫 Feature Tests，檔案位於 `tests/Feature/*.php`。
+- 常用指令：
+  ```bash
+  php artisan test
+  ```
+- 測試涵蓋：
+  - 列出、建立、更新、刪除課程 API
+  - 列出與建立教師 API
+  - 查詢教師課程列表 API
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
+
+## 手動測試 (Postman)
+
+可匯入範例 Postman Collection，手動驗證 API：
+1. 匯入 `postman_collection.json`
+2. 設定環境變數 `baseUrl = http://127.0.0.1:8000`
+3. 依序執行所有請求，檢查回應與測試結果一致。
+
+---
+
+## 使用到的主要工具
+
+- VSCode
+- XAMPP（Apache + MySQL）
+- Composer
+- Artisan CLI
+- Eloquent ORM
+- Factory & Seeder
+- PHPUnit + Laravel Test Suite
+- Postman
+
+---
+
+## 開發流程
+
+1. 本地環境搭建 → 2. Model/Controller 產生 → 3. DB Migration & Seeder → 4. API 開發 → 5. 撰寫 Feature Tests → 6. 手動驗證 (Postman) → 7. 調整與優化
+
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT © Ryan Chuang
+
